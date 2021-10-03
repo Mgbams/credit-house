@@ -10,8 +10,8 @@ const COLORS = {
 const MenuLabel = styled.label`
   background-color: ${COLORS.primaryLight};
   position: fixed;
-  top: 6rem;
-  right: 6rem;
+  top: 1rem;
+  right: 2rem;
   border-radius: 50%;
   height: 7rem;
   width: 7rem;
@@ -23,8 +23,8 @@ const MenuLabel = styled.label`
 
 const NavBackground = styled.div`
   position: fixed;
-  top: 6.5rem;
-  right: 6.5rem;
+  top: 0rem;
+  left: 0rem;
   background-color: ${COLORS.primaryDark};
   height: 6rem;
   width: 6rem;
@@ -117,12 +117,18 @@ const ItemLink = styled(NavLink)`
 
 function Navbar() {
   const [click, setClick] = useState(false);
+  const [countClicks, setCountClick] = useState(0);
 
-  const handleClick = () => setClick(!click);
+  const handleClick = () => {
+    setClick(!click);
+    setCountClick(countClicks + 1);
+  };
   return (
     <div>
       <MenuLabel htmlFor="navi-toggle" onClick={handleClick}>
-        <Icon clicked={click}>&nbsp;</Icon>
+        <Icon clicked={click} countedClicks={countClicks}>
+          &nbsp;
+        </Icon>
       </MenuLabel>
       <NavBackground clicked={click}>&nbsp;</NavBackground>
 
@@ -160,3 +166,18 @@ function Navbar() {
 }
 
 export default Navbar;
+
+{
+  /*
+
+  ${MenuLabel}:hover &::before {
+    top: ${(props) =>
+      props.clicked && props.countedClicks % 2 == 0 ? ".8rem" : "-1rem"};
+  }
+
+  ${MenuLabel}:hover &::after {
+    top: ${(props) =>
+      props.clicked && props.countedClicks % 2 == 0 ? "-.8rem" : "1rem"};
+  }
+*/
+}
