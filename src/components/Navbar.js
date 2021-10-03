@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 const COLORS = {
@@ -23,12 +24,95 @@ const MenuLabel = styled.label`
 const NavBackground = styled.div`
   position: fixed;
   top: 6.5rem;
-  left: 6.5rem;
+  right: 6.5rem;
   background-color: ${COLORS.primaryDark};
   height: 6rem;
   width: 6rem;
+  z-index: 600;
   border-radius: 50%;
   transform: ${(props) => (props.clicked ? "scale(80)" : "scale(0)")};
+  transition: transform 1.2s;
+`;
+
+const Icon = styled.span`
+  position: relative;
+  background-color: ${(props) => (props.clicked ? "transparent" : "black")};
+  width: 3rem;
+  height: 2px;
+  display: inline-block;
+  margin-top: 3.5rem;
+  transition: all 0.3s;
+
+  &::before,
+  &::after {
+    content: "";
+    background-color: black;
+    width: 3rem;
+    height: 2px;
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    transition: all 0.3s;
+  }
+
+  &::before {
+    top: ${(props) => (props.clicked ? "0" : "-.8rem")};
+    transform: ${(props) =>
+      props.clicked ? "rotate(135deg)" : "rotate(0deg)"};
+  }
+
+  &::after {
+    top: ${(props) => (props.clicked ? "0" : ".8rem")};
+    transform: ${(props) =>
+      props.clicked ? "rotate(-135deg)" : "rotate(0deg)"};
+  }
+`;
+
+const Navigation = styled.nav`
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 600;
+  width: ${(props) => (props.clicked ? "100%" : "0")};
+  opacity: ${(props) => (props.clicked ? "1" : "0")};
+
+  transition: width 0.8s, opacity 0.8s;
+`;
+
+const List = styled.ul`
+  position: absolute;
+  list-style-type: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+`;
+
+const ItemLink = styled(NavLink)`
+  display: inline-block;
+  font-size: 3rem;
+  font-weight: 300;
+  text-decoration: none;
+  color: ${COLORS.primaryLight};
+  padding: 1rem 2rem;
+
+  background-image: linear-gradient(
+    120deg,
+    transparent 0,
+    transparent 50%,
+    #fff 50%
+  );
+  background-size: 240%;
+  transition: all 0.4s;
+
+  &:hover,
+  &:active {
+    background-position: 100%;
+    color: ${COLORS.primaryDark};
+    transform: translateX(1rem);
+  }
 `;
 
 function Navbar() {
@@ -38,9 +122,39 @@ function Navbar() {
   return (
     <div>
       <MenuLabel htmlFor="navi-toggle" onClick={handleClick}>
-        Menu
+        <Icon clicked={click}>&nbsp;</Icon>
       </MenuLabel>
       <NavBackground clicked={click}>&nbsp;</NavBackground>
+
+      <Navigation clicked={click} onClick={handleClick}>
+        <List>
+          <li>
+            <ItemLink onClick={handleClick} to="/">
+              Home
+            </ItemLink>
+          </li>
+          <li>
+            <ItemLink onClick={handleClick} to="/about">
+              About
+            </ItemLink>
+          </li>
+          <li>
+            <ItemLink onClick={handleClick} to="/blog">
+              Blog
+            </ItemLink>
+          </li>
+          <li>
+            <ItemLink onClick={handleClick} to="/portfolio">
+              Portfolio
+            </ItemLink>
+          </li>
+          <li>
+            <ItemLink onClick={handleClick} to="/contact">
+              Contact
+            </ItemLink>
+          </li>
+        </List>
+      </Navigation>
     </div>
   );
 }
