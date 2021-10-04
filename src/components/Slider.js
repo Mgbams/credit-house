@@ -11,7 +11,7 @@ import "../css/Slider.css";
 
 function ImageSlider() {
   let settings = {
-    dot: true,
+    dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
